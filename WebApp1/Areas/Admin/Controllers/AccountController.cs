@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -13,10 +14,15 @@ using WebApp1.ViewModels;
 namespace WebApp1.Areas.Admin.Controllers
 {
     public class AccountController : Controller
-    {
+    {       
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private readonly ApplicationDbContext _context;
 
+        public AccountController()
+        {
+            _context = new ApplicationDbContext();
+        }
         public ApplicationSignInManager SignInManager
         {
             get
@@ -41,12 +47,24 @@ namespace WebApp1.Areas.Admin.Controllers
             }
         }
         // GET: Admin/Account
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var trainerRole = await _context.Roles.SingleOrDefaultAsync(r => r.Name == Role.Trainer);
+            var staffRole = await _context.Roles.SingleOrDefaultAsync(r => r.Name == Role.Staff);
+
+            var model = new GroupedUsersViewModel()
+            {
+                Trainers = await _context.Users
+                    .Where(u => u.Roles.Any(r => r.RoleId == trainerRole.Id))
+                    .ToListAsync(),
+                Staffs = await _context.Users
+                    .Where(u => u.Roles.Any(r => r.RoleId == staffRole.Id))
+                    .ToListAsync(),
+            };
+            return View(model);
         }
         [HttpGet]
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
             var model = new AccountViewModel()
             {
@@ -71,6 +89,7 @@ namespace WebApp1.Areas.Admin.Controllers
                 }
                 AddErrors(result);
             }
+            model.Roles = new List<string>() { Role.Trainer, Role.Staff };
 
             // If we got this far, something failed, redisplay form
             return View(model);
