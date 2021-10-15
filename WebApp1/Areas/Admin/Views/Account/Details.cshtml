@@ -1,7 +1,9 @@
-﻿
+﻿@model WebApp1.ViewModels.ProfileViewModel
 @{
     ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
 
+@Html.Partial("DetailsProfile")
+@Html.ActionLink("Back To The Index Page", "Index")
