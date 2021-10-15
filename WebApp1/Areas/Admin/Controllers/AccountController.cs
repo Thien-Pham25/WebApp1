@@ -178,5 +178,26 @@ namespace WebApp1.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(Delete), new { id, saveChangesError = true });
         }
+        [HttpGet]
+        public async Task<ActionResult> Edit(string id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var user = await UserManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+
+            var model = new ProfileViewModel()
+            {
+                User = user,
+                Roles = new List<string>(await UserManager.GetRolesAsync(id))
+            };
+            return View(model);
+        }
     }
 }
