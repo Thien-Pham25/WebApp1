@@ -179,6 +179,10 @@
     <Compile Include="Migrations\202110141344484_InitialCreate.Designer.cs">
       <DependentUpon>202110141344484_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202110151325446_alter-user-table.cs" />
+    <Compile Include="Migrations\202110151325446_alter-user-table.Designer.cs">
+      <DependentUpon>202110151325446_alter-user-table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -272,6 +276,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202110141344484_InitialCreate.resx">
       <DependentUpon>202110141344484_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202110151325446_alter-user-table.resx">
+      <DependentUpon>202110151325446_alter-user-table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

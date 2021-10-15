@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -16,5 +17,17 @@ namespace WebApp1.Models
             // Add custom user claims here
             return userIdentity;
         }
+
+        [StringLength(255)]
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
+        [Range(0, int.MaxValue)]
+        public int Age { get; set; }
+        [StringLength(255)]
+
+        public string Address { get; set; }
+
     }
+
+    
 }
