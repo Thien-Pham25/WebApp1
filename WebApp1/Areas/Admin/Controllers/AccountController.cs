@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -100,6 +101,27 @@ namespace WebApp1.Areas.Admin.Controllers
             {
                 ModelState.AddModelError("", error);
             }
+        }
+
+        public async Task<ActionResult> Details (string id)
+        {
+            if (id == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var user = await UserManager.FindByIdAsync(id);
+            
+            if(user == null)
+            {
+                return HttpNotFound();
+            }
+
+
+            var model = new ProfileViewModel()
+            {
+                User = user,
+                Roles = new List<string>(await UserManager.GetRolesAsync(id))
+            };
+            return View(model);
         }
     }
 }
